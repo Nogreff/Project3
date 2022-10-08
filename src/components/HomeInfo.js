@@ -15,7 +15,7 @@ useEffect(()=>{
         setPromiseInfo(EQInfo)
         EQData=promiseInfo
     }
-})
+},[EQInfo])
 
 if(EQInfo!=undefined){     
     var infoOrder= EQData.slice().sort(function(a,b){
