@@ -1,30 +1,32 @@
 import {useEffect,useState} from "react"
 import {useNavigate} from "react-router-dom"
 import "../css/HomeInfo.css"
-var EQData;
+var EQData,infoOrder;
 
 function HomeInfo(props){
-    const {EQInfo}=props;
+    const {EQInfo,mountCheck}=props;
     const navigate=useNavigate();
     const[promiseInfo,setPromiseInfo]=useState("Loading ...")
     const[infoCheck,setInfoCheck]=useState(false)
     EQData=EQInfo
-    
+    console.log(mountCheck)
 useEffect(()=>{
-    if(EQInfo!=undefined){
+    if(mountCheck===true && EQData){
+        infoOrder= EQData.sort(function(a,b){
+            let c=a.properties.mag
+            let d=b.properties.mag
+            return d-c
+    
+        })
+        infoOrder=infoOrder.slice(0, 5)
         setPromiseInfo(EQInfo)
+        setInfoCheck(infoOrder)
         EQData=promiseInfo
     }
-},[EQInfo])
+},[EQData,mountCheck])
 
-if(EQInfo!=undefined){     
-    var infoOrder= EQData.slice().sort(function(a,b){
-        let c=a.properties.mag
-        let d=b.properties.mag
-        return d-c
+if(mountCheck===true){     
 
-    })
-    infoOrder=infoOrder.slice(0, 5)
 }
 /*     useEffect(()=>{
         if(EQInfo && infoOrder && infoCheck===false){           
@@ -40,8 +42,8 @@ if(EQInfo!=undefined){
              <h1>The biggest earthquakes from the last 365 days</h1>
              <ul className="info_list">
                  {
-                 EQInfo && infoOrder && EQData?
-                     infoOrder.map((value,index)=>{
+                 mountCheck===true && infoOrder?
+                     infoCheck.map((value,index)=>{
                             const toDetails=()=>{
                                 navigate('/Details',{
                                     state:{

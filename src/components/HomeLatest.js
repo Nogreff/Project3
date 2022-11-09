@@ -6,7 +6,7 @@ import "../css/HomeLatest.css"
 function HomeLatest(props){
     const {EQData}= props;
     const [EQLatest,setEQLatest] =useState([]);
-    const [latestCheck,setLatestCHeck]=useState(false)
+    const [latestCheck,setLatestCheck]=useState(false)
     const navigate=useNavigate()
     var latestEQ;
     if(EQData){ 
@@ -18,13 +18,20 @@ function HomeLatest(props){
        }) */
         latestEQ=EQData.slice(0,10);            
         if(latestCheck===false && (latestEQ && EQData)){           
-            setEQLatest(latestEQ);
-            setLatestCHeck(true)
+
         }
         latestEQ=EQLatest;
-        
+
         
     }
+    useEffect(()=>{
+        if(EQData){
+            latestEQ=EQData.slice(0,10)
+            setEQLatest(latestEQ);
+            setLatestCheck(true)
+        }
+    },[EQData])
+    console.log(EQData)
     return(
         <section className="home_latest">
             <div className="latest_wrap">
