@@ -20,47 +20,61 @@ var dateToday =new Date();
 EQDay = new Date();
 
 EQDay.setDate(dateToday.getDate()-365)
-console.log(EQDay)
+console.log(EQDay.toISOString().replace(/T.*/,'').split('-').join('-'))
 EQTop = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+EQDay.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"&minmagnitude=6.5"
 console.log(dateI)
-if(dStart.getHours()>dateI){
+if(dateI>-1 && dateI<3){
+  console.log("999")
+  dStart.setDate(dStart.getDate()-1)
+  dEnd.setDate(dEnd.getDate()+2)
+
+}else if(dStart.getHours()>dateI){
   dStart.setDate(dStart.getDate()-1)
   dEnd.setDate(dEnd.getDate())
 }else{
   dStart.setDate(dStart.getDate())
   dEnd.setDate(dEnd.getDate()+1) 
 }
-
+console.log(dateI)
 /* dStart.setDate(d.getDate()-5); */
-var EQWeek,EQMonth,EQYear,EQInfo=[];
+var EQWeek,EQMonth,EQYear;
 console.log(dStart)
 console.log(dEnd)
 var EQDefault="&starttime="+dStart.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"";
 var countRequest=false
 var EQUrl="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"+EQDefault;
+console.log(EQUrl)
 class App extends Component {
-  state={};
+  state={
+    quake:[],
+    EQInfo:[],
+    mountCheck:false
+  };
+  EQInfo={}
   apiRequest=()=>{
     const url=EQUrl;
     fetch(url).then(response=>response.json()).then(data=>{
-      this.setState(data);
-      
-        EQData=this.state.features;
-
+      this.setState({quake: data});
+      //this.state.quake=data
+      console.log(data)
+        EQData=this.state.quake.features;
+        console.log(this.state.quake.features)
     })
   }
   
   apiInfo=()=>{
     const url=EQTop;
     fetch(url).then(response=>response.json()).then(data=>{
-        EQInfo=data.features
+        this.setState({EQInfo: data.features});
+        //this.state.EQInfo=data.features
+        console.log(this.state.EQInfo)
     })
   }
   componentDidMount(){
     this.apiInfo();
-    this.apiRequest();  
+    this.apiRequest(); 
     console.log("Component did mount")
-    
+    this.state.mountCheck=true;
   }
   searchMapDate=(Start,MinMag)=>{
     let y=Start
@@ -99,13 +113,13 @@ class App extends Component {
          
   }
   render(){
-    console.log(EQInfo)
+    console.log(this.state)
     return (
       <div className="App">
         <Router>
         <Header/>
         <Routes>
-            <Route path="/" element={<Home EQData={this.state.features} searchMapDate={this.searchMapDate} EQInfo={EQInfo} dateToday={dateToday}/>}/>
+            <Route path="/" element={<Home EQData={this.state.quake.features} searchMapDate={this.searchMapDate} EQInfo={this.state.EQInfo} dateToday={dateToday} mountCheck={this.state.mountCheck}/>}/>
             <Route path="/Details" element={<Details/>}/>
         </Routes>
         <Footer/>
