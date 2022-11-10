@@ -94,3 +94,8 @@
 .circle_container a:hover{
     cursor: pointer;
 }
+@media all and (max-width:55rem){
+    .leaflet-container{
+        height: 30rem !important;
+    }
+}

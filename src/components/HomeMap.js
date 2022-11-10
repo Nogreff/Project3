@@ -67,6 +67,7 @@ function HomeMap(props){
    
     console.log(minMagnitude)
     console.log(isNaN(minMagnitude))
+    console.log(EQData)
     return(
         <section className="home_map">
            <h1>World map</h1>

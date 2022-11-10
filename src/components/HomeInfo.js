@@ -8,22 +8,25 @@ function HomeInfo(props){
     const navigate=useNavigate();
     const[promiseInfo,setPromiseInfo]=useState("Loading ...")
     const[infoCheck,setInfoCheck]=useState(false)
-    EQData=EQInfo
+    //EQData=EQInfo
     console.log(mountCheck)
+    console.log(EQInfo)
 useEffect(()=>{
-    if(mountCheck===true && EQData){
-        infoOrder= EQData.sort(function(a,b){
+    if(EQInfo && mountCheck===true){
+        infoOrder= EQInfo.sort(function(a,b){
             let c=a.properties.mag
             let d=b.properties.mag
             return d-c
     
         })
+        console.log(infoOrder)
         infoOrder=infoOrder.slice(0, 5)
         setPromiseInfo(EQInfo)
         setInfoCheck(infoOrder)
         EQData=promiseInfo
+        console.log("filtering")
     }
-},[EQData,mountCheck])
+},[EQInfo,mountCheck])
 
 if(mountCheck===true){     
 
@@ -35,15 +38,15 @@ if(mountCheck===true){
             infoOrder=promiseInfo
         }  
     }) */
-
+console.log("infoOrder :"+infoOrder)
     return(
         <section className="home_info">
             <div className="info_container">
              <h1>The biggest earthquakes from the last 365 days</h1>
              <ul className="info_list">
                  {
-                 mountCheck===true && infoOrder?
-                     infoCheck.map((value,index)=>{
+                infoOrder && infoOrder.length>0?
+                     infoOrder.map((value,index)=>{
                             const toDetails=()=>{
                                 navigate('/Details',{
                                     state:{
@@ -57,11 +60,11 @@ if(mountCheck===true){
                                     }
                             })
                             }
-                            let xx=new Date(value.properties.time).toLocaleString()
+                            let xx=new Date(value.properties.time).toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' , hour12: false})
                             return(
                                 <li>
                                     <span>{value.properties.mag}</span> 
-                                    <span className="info_date">{xx.substring(0,xx.length-3)}</span> 
+                                    <span className="info_date">{xx}</span> 
                                     <span onClick={()=>{toDetails()}}><a>{value.properties.place}</a></span>
                                     {/* <span><img src={require("../img/view-details.png")}/></span> */}
                                 </li>

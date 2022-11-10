@@ -18,19 +18,19 @@ function HomeLatest(props){
        }) */
         latestEQ=EQData.slice(0,10);            
         if(latestCheck===false && (latestEQ && EQData)){           
-
+            latestEQ=EQData.slice(0,10)
+            setEQLatest(latestEQ);
+            setLatestCheck(true)
         }
         latestEQ=EQLatest;
 
         
     }
-    useEffect(()=>{
+/*     useEffect(()=>{
         if(EQData){
-            latestEQ=EQData.slice(0,10)
-            setEQLatest(latestEQ);
-            setLatestCheck(true)
+
         }
-    },[EQData])
+    },[EQData]) */
     console.log(EQData)
     return(
         <section className="home_latest">
@@ -47,7 +47,7 @@ function HomeLatest(props){
                EQData && latestEQ?
                latestEQ.map((item,index)=>{
                     var timeUTC=new Date(item.properties.time)
-                    timeUTC=timeUTC.toLocaleString('EN-us');
+                    timeUTC=timeUTC.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' , hour12: false});
                     var latestUTC=new Date(item.properties.updated)
                     latestUTC=latestUTC.toLocaleString('EN-us');
                     const toDetails=()=>{
@@ -65,9 +65,9 @@ function HomeLatest(props){
                     }
                     return(
                         <li>
-                            <span>{timeUTC.substr(0,timeUTC.length -3)}</span>
-                            <span>{String(item.geometry.coordinates[2]).slice(0,5)}</span>
-                            <span>{String(item.properties.mag).slice(0,5)}</span>
+                            <span>{timeUTC}</span>
+                            <span>{String(item.geometry.coordinates[2]).slice(0,5)} km</span>
+                            <span>{String(item.properties.mag).slice(0,5)} md</span>
                             <span onClick={()=>{toDetails()}}><a>{item.properties.place}</a></span>
                         </li>
                     )
