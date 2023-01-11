@@ -1,19 +1,19 @@
-.footer_info{
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.footer_info {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
-.footer_info li{
-    width: min(100%,20rem);
-    padding: 1rem;
+.footer_info li {
+	width: min(100%, 20rem);
+	padding: 1rem;
 }
-.link_format{
-    color: #0066CC;
-    border-bottom: 1px solid #0066CC;
+.link_format {
+	color: #0066cc;
+	border-bottom: 1px solid #0066cc;
 }
-.link_format:hover{
-    cursor: pointer;
+.link_format:hover {
+	cursor: pointer;
 }

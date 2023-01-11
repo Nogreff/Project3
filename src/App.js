@@ -1,133 +1,146 @@
 import './App.css';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import Details from "./components/Details";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+import Details from './components/Details';
+import { Component } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import {BrowserRouter  as Router, Routes, Route} from "react-router-dom";
-import {Component} from "react";
-import {DataProvider} from "./context/DataContext";
-var EQData;
-var EQStart,
-    EQEnd,
-    EQDay,
-    EQTop,
-    EQDetails;
-var dStart = new Date();
-var dEnd = new Date();
-var dateI = new Date().getUTCHours()
-var dateToday =new Date();
-EQDay = new Date();
-
-EQDay.setDate(dateToday.getDate()-365)
-console.log(EQDay.toISOString().replace(/T.*/,'').split('-').join('-'))
-EQTop = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+EQDay.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"&minmagnitude=6.5"
-console.log(dateI)
-if(dateI>-1 && dateI<3){
-  console.log("999")
-  dStart.setDate(dStart.getDate()-1)
-  dEnd.setDate(dEnd.getDate()+2)
-
-}else if(dStart.getHours()>dateI){
-  dStart.setDate(dStart.getDate()-1)
-  dEnd.setDate(dEnd.getDate())
-}else{
-  dStart.setDate(dStart.getDate())
-  dEnd.setDate(dEnd.getDate()+1) 
-}
-console.log(dateI)
-/* dStart.setDate(d.getDate()-5); */
-var EQWeek,EQMonth,EQYear;
-console.log(dStart)
-console.log(dEnd)
-var EQDefault="&starttime="+dStart.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"";
-var countRequest=false
-var EQUrl="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"+EQDefault;
-console.log(EQUrl)
 class App extends Component {
-  state={
-    quake:[],
-    EQInfo:[],
-    mountCheck:false
-  };
-  EQInfo={}
-  apiRequest=()=>{
-    const url=EQUrl;
-    fetch(url).then(response=>response.json()).then(data=>{
-      this.setState({quake: data});
-      //this.state.quake=data
-      console.log(data)
-        EQData=this.state.quake.features;
-        console.log(this.state.quake.features)
-    })
-  }
-  
-  apiInfo=()=>{
-    const url=EQTop;
-    fetch(url).then(response=>response.json()).then(data=>{
-        this.setState({EQInfo: data.features});
-        //this.state.EQInfo=data.features
-        console.log(this.state.EQInfo)
-    })
-  }
-  componentDidMount(){
-    this.apiInfo();
-    this.apiRequest(); 
-    console.log("Component did mount")
-    this.state.mountCheck=true;
-  }
-  searchMapDate=(Start,MinMag)=>{
-    let y=Start
-    console.log(Start,MinMag)
-    
-    console.log(y)
-    EQStart="&starttime="+y+"";
-    EQEnd="&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"&minmagnitude="+MinMag+"";
-    console.log(EQStart)
-    EQDefault=EQStart+EQEnd
-    EQUrl="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"+EQDefault;
-    this.apiRequest();
-  }
-  infoColector(){ 
+	state = {
+		quake: [],
+		eqInfo: [],
+		eqFilter: null,
+		mountCheck: false,
+		eqDay: new Date(),
+		dateNow: new Date(),
+		dStart: new Date(),
+		dEnd: new Date(),
+		dateUTC: new Date().getUTCHours(),
+	};
 
-        /*
-        EQWeek = new Date();
-        EQMonth = new Date();
-        EQYear = new Date();
-        switch(EQInfo.length){
-          case undefined:
+	eqTop = () =>
+		'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=' +
+		this.state.eqDay.toISOString().replace(/T.*/, '').split('-').join('-') +
+		'&endtime=' +
+		this.state.dEnd.toISOString().replace(/T.*/, '').split('-').join('-') +
+		'&minmagnitude=6.5';
 
-          case 1:
+	eqDefault = () =>
+		'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=' +
+		this.state.dStart.toISOString().replace(/T.*/, '').split('-').join('-') +
+		'&endtime=' +
+		this.state.dEnd.toISOString().replace(/T.*/, '').split('-').join('-') +
+		'';
 
-          
-        }
-        EQDay.setDate(dateToday.getDate()-1)*/
-        //this.apiInfo("https://earthquake.usgs.gov/fdsnws/event/1/count?starttime="+EQDay.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"")
-        //EQWeek.setDate(dateToday.getDate()-7)
-        //this.apiInfo("https://earthquake.usgs.gov/fdsnws/event/1/count?starttime="+EQWeek.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"")        
-        //EQMonth.setDate(dateToday.getDate()-30)
-        //this.apiInfo("https://earthquake.usgs.gov/fdsnws/event/1/count?starttime="+EQMonth.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"")
-        //EQYear.setDate(dateToday.getDate()-365)
-        //this.apiInfo("https://earthquake.usgs.gov/fdsnws/event/1/count?starttime="+EQYear.toISOString().replace(/T.*/,'').split('-').join('-')+"&endtime="+dEnd.toISOString().replace(/T.*/,'').split('-').join('-')+"")  
-        
-         
-  }
-  render(){
-    console.log(this.state)
-    return (
-      <div className="App">
-        <Router>
-        <Header/>
-        <Routes>
-            <Route path="/" element={<Home EQData={this.state.quake.features} searchMapDate={this.searchMapDate} EQInfo={this.state.EQInfo} dateToday={dateToday} mountCheck={this.state.mountCheck}/>}/>
-            <Route path="/Details" element={<Details/>}/>
-        </Routes>
-        <Footer/>
-        </Router>
-      </div>
-    );
-  }
+	dateConfig = () => {
+		if (this.state.dateUTC > -1 && this.state.dateUTC < 3) {
+			this.state.dStart.setDate(this.state.dStart.getDate() - 1);
+			this.state.dEnd.setDate(this.state.dEnd.getDate() + 2);
+		} else if (this.state.dStart.getHours() > this.state.dateUTC) {
+			this.state.dStart.setDate(this.state.dStart.getDate() - 1);
+			this.state.dEnd.setDate(this.state.dEnd.getDate());
+		} else {
+			this.state.dStart.setDate(this.state.dStart.getDate());
+			this.state.dEnd.setDate(this.state.dEnd.getDate() + 1);
+		}
+	};
 
+	setEQDay = () => {
+		if (this.state.eqDay.getTime() === this.state.dateNow.getTime()) {
+			this.setState({
+				eqDay: this.state.eqDay.setDate(this.state.dateNow.getDate() - 365),
+			});
+		}
+	};
+
+	apiRequest = () => {
+		if (this.state.eqFilter === null) {
+			const URL = this.eqDefault();
+			fetch(URL)
+				.then(response => response.json())
+				.then(data => {
+					this.setState({ quake: data });
+				});
+		} else {
+			const URL = this.state.eqFilter;
+			fetch(URL)
+				.then(response => response.json())
+				.then(data => {
+					this.setState({ quake: data });
+				});
+		}
+	};
+
+	apiInfo = () => {
+		const URL = this.eqTop();
+		fetch(URL)
+			.then(response => response.json())
+			.then(data => {
+				const dataSorted = data.features
+					.sort(function (a, b) {
+						const c = a.properties.mag;
+						const d = b.properties.mag;
+						return d - c;
+					})
+					.slice(0, 5);
+				this.setState({
+					eqInfo: dataSorted,
+				});
+			});
+	};
+
+	eqRequest = (start, minMag) => {
+		const EQSTART = '&starttime=' + start + '';
+		const EQEND =
+			'&endtime=' +
+			this.state.dEnd.toISOString().replace(/T.*/, '').split('-').join('-') +
+			'&minmagnitude=' +
+			minMag +
+			'';
+		this.setState({
+			eqFilter:
+				'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson' +
+				EQSTART +
+				EQEND,
+		});
+		this.apiRequest();
+	};
+
+	componentDidMount() {
+		this.setState.mountCheck = true;
+		this.dateConfig();
+		this.eqDefault();
+		this.setEQDay();
+		this.apiInfo();
+		this.apiRequest();
+		console.log('Component did mount');
+	}
+
+	render() {
+		return (
+			<div className='App'>
+				<Router>
+					<Header />
+					<Routes>
+						<Route
+							path='/'
+							element={
+								<Home
+									eqData={this.state.quake.features}
+									eqRequest={this.eqRequest}
+									eqInfo={this.state.eqInfo}
+									mountCheck={this.state.mountCheck}
+								/>
+							}
+						/>
+						<Route path='/Details' element={<Details />} />
+					</Routes>
+					<Footer />
+				</Router>
+			</div>
+		);
+	}
 }
 
 export default App;
