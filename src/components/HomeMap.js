@@ -23,10 +23,12 @@ function HomeMap(props) {
 	date7d = date7d.toISOString().replace(/T.*/, '').split('-').join('-');
 	date30d = date30d.toISOString().replace(/T.*/, '').split('-').join('-');
 	if (searchBtn) {
+		console.log(quakeStart, minMagnitude);
 		searchBtn.addEventListener('click', e => {
 			const dateError = document.querySelector('.wrapper_combo_date');
 			const magError = document.querySelector('.wrapper_combo_magnitude');
 			if (quakeStart && minMagnitude) {
+				console.log(quakeStart, minMagnitude);
 				eqRequest(quakeStart, minMagnitude);
 				dateError.classList.remove('error');
 				magError.classList.remove('error');
