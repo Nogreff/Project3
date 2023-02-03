@@ -55,6 +55,7 @@ class App extends Component {
 	};
 
 	apiRequest = () => {
+		console.log(this.state.eqFilter);
 		if (this.state.eqFilter === null) {
 			const URL = this.eqDefault();
 			fetch(URL)
