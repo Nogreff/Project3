@@ -22,7 +22,7 @@ function HomeMap(props) {
 	date24 = date24.toISOString().replace(/T.*/, '').split('-').join('-');
 	date7d = date7d.toISOString().replace(/T.*/, '').split('-').join('-');
 	date30d = date30d.toISOString().replace(/T.*/, '').split('-').join('-');
-	if (searchBtn != null) {
+	if (searchBtn) {
 		searchBtn.addEventListener('click', e => {
 			const dateError = document.querySelector('.wrapper_combo_date');
 			const magError = document.querySelector('.wrapper_combo_magnitude');
