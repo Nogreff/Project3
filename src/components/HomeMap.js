@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import '../css/HomeMap.css';
 import 'leaflet/dist/leaflet.css';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ function HomeMap(props) {
 	const [quakeStart, setQuakeStart] = useState('');
 	const [minMagnitude, setMagnitude] = useState('');
 	const navigate = useNavigate();
-	const btnRef = useRef('null');
+	// const btnRef = useRef(null);
 	const STARTER_POSITION = [51.505, -0.09];
 	let date24 = new Date();
 	let date7d = new Date();
@@ -86,9 +86,7 @@ function HomeMap(props) {
 						</span>
 					</div>
 					<div className='map_input'>
-						<a ref={btnRef} className='search_btn'>
-							Search
-						</a>
+						<a className='search_btn'>Search</a>
 					</div>
 				</div>
 				<div className='map_data'>
