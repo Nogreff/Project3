@@ -92,6 +92,7 @@ class App extends Component {
 	};
 
 	eqRequest = (start, minMag) => {
+		console.log(start, minMag);
 		const EQSTART = '&starttime=' + start + '';
 		const EQEND =
 			'&endtime=' +
