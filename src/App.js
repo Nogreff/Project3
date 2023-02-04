@@ -108,9 +108,12 @@ class App extends Component {
 		});
 		const getFilter = () => {
 			return new Promise((resolve, reject) => {
-				resolve(this.state.eqFilter);
+				if (this.state.eqFilter != null) {
+					resolve(this.state.eqFilter);
+				}
 			});
 		};
+		console.log(getFilter());
 		getFilter().then(this.apiRequest());
 	};
 
