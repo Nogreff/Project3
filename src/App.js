@@ -83,6 +83,7 @@ class App extends Component {
 
 	apiNewRequest = async () => {
 		const URL = await this.getFilter();
+		console.log(URL);
 		fetch(URL)
 			.then(response => response.json())
 			.then(data => {
