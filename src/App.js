@@ -10,7 +10,6 @@ class App extends Component {
 	state = {
 		quake: [],
 		eqInfo: [],
-		eqFilter: null,
 		mountCheck: false,
 		eqDay: new Date(),
 		dateNow: new Date(),
@@ -54,25 +53,9 @@ class App extends Component {
 		}
 	};
 
-	getFilter = () => {
-		return new Promise((resolve, reject) => {
-			if (this.state.eqFilter != null) {
-				resolve(this.state.eqFilter);
-			}
-		});
-	};
-
-	apiRequest = async () => {
-		console.log(this.state.eqFilter);
+	apiRequest = () => {
 		if (this.state.eqFilter === null) {
 			const URL = this.eqDefault();
-			fetch(URL)
-				.then(response => response.json())
-				.then(data => {
-					this.setState({ quake: data });
-				});
-		} else {
-			const URL = await this.getFilter();
 			fetch(URL)
 				.then(response => response.json())
 				.then(data => {
@@ -81,8 +64,8 @@ class App extends Component {
 		}
 	};
 
-	apiNewRequest = async newRequest => {
-		const URL = await newRequest;
+	apiNewRequest = newRequest => {
+		const URL = newRequest;
 		console.log(URL);
 		fetch(URL)
 			.then(response => response.json())
@@ -109,25 +92,6 @@ class App extends Component {
 			});
 	};
 
-	eqRequest = async (start, minMag) => {
-		console.log(start, minMag);
-		const EQSTART = '&starttime=' + start + '';
-		const EQEND =
-			'&endtime=' +
-			this.state.dEnd.toISOString().replace(/T.*/, '').split('-').join('-') +
-			'&minmagnitude=' +
-			minMag +
-			'';
-		this.setState({
-			eqFilter:
-				'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson' +
-				EQSTART +
-				EQEND,
-		});
-
-		setTimeout(this.apiNewRequest(), 1000);
-	};
-
 	componentDidMount() {
 		this.setState.mountCheck = true;
 		this.dateConfig();
@@ -149,7 +113,6 @@ class App extends Component {
 							element={
 								<Home
 									eqData={this.state.quake.features}
-									eqRequest={this.eqRequest}
 									eqInfo={this.state.eqInfo}
 									mountCheck={this.state.mountCheck}
 									apiNewRequest={this.apiNewRequest}
