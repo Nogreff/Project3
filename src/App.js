@@ -100,13 +100,20 @@ class App extends Component {
 			'&minmagnitude=' +
 			minMag +
 			'';
-		this.setState({
-			eqFilter:
-				'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson' +
-				EQSTART +
-				EQEND,
-		});
-		this.apiRequest();
+
+		const getFilter = () => {
+			return new Promise((resolve, reject) => {
+				resolve(
+					this.setState({
+						eqFilter:
+							'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson' +
+							EQSTART +
+							EQEND,
+					})
+				);
+			});
+		};
+		getFilter().then(this.apiRequest());
 	};
 
 	componentDidMount() {
