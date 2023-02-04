@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 
 function HomeMap(props) {
-	const { eqData, eqRequest, apiNewRequest } = props;
+	const { eqData, apiNewRequest } = props;
 	const [quakeStart, setQuakeStart] = useState('');
 	const [minMagnitude, setMagnitude] = useState('');
 	const navigate = useNavigate();
