@@ -81,6 +81,15 @@ class App extends Component {
 		}
 	};
 
+	apiNewRequest = async () => {
+		const URL = await this.getFilter();
+		fetch(URL)
+			.then(response => response.json())
+			.then(data => {
+				this.setState({ quake: data });
+			});
+	};
+
 	apiInfo = () => {
 		const URL = this.eqTop();
 		fetch(URL)
@@ -115,7 +124,7 @@ class App extends Component {
 				EQEND,
 		});
 
-		this.getFilter().then(this.apiRequest());
+		this.getFilter().then(this.apiNewRequest());
 	};
 
 	componentDidMount() {
