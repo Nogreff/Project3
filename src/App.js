@@ -54,7 +54,15 @@ class App extends Component {
 		}
 	};
 
-	apiRequest = () => {
+	getFilter = () => {
+		return new Promise((resolve, reject) => {
+			if (this.state.eqFilter != null) {
+				resolve(this.state.eqFilter);
+			}
+		});
+	};
+
+	apiRequest = async () => {
 		console.log(this.state.eqFilter);
 		if (this.state.eqFilter === null) {
 			const URL = this.eqDefault();
@@ -64,7 +72,7 @@ class App extends Component {
 					this.setState({ quake: data });
 				});
 		} else {
-			const URL = this.state.eqFilter;
+			const URL = await this.getFilter();
 			fetch(URL)
 				.then(response => response.json())
 				.then(data => {
@@ -91,7 +99,7 @@ class App extends Component {
 			});
 	};
 
-	eqRequest = (start, minMag) => {
+	eqRequest = async (start, minMag) => {
 		console.log(start, minMag);
 		const EQSTART = '&starttime=' + start + '';
 		const EQEND =
@@ -106,15 +114,8 @@ class App extends Component {
 				EQSTART +
 				EQEND,
 		});
-		const getFilter = () => {
-			return new Promise((resolve, reject) => {
-				if (this.state.eqFilter != null) {
-					resolve(this.state.eqFilter);
-				}
-			});
-		};
-		console.log(getFilter());
-		getFilter().then(this.apiRequest());
+
+		this.apiRequest();
 	};
 
 	componentDidMount() {
