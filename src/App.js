@@ -54,14 +54,12 @@ class App extends Component {
 	};
 
 	apiRequest = () => {
-		if (this.state.eqFilter === null) {
-			const URL = this.eqDefault();
-			fetch(URL)
-				.then(response => response.json())
-				.then(data => {
-					this.setState({ quake: data });
-				});
-		}
+		const URL = this.eqDefault();
+		fetch(URL)
+			.then(response => response.json())
+			.then(data => {
+				this.setState({ quake: data });
+			});
 	};
 
 	apiNewRequest = newRequest => {
