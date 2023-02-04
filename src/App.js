@@ -81,8 +81,8 @@ class App extends Component {
 		}
 	};
 
-	apiNewRequest = async () => {
-		const URL = await this.getFilter();
+	apiNewRequest = async newRequest => {
+		const URL = await newRequest;
 		console.log(URL);
 		fetch(URL)
 			.then(response => response.json())
@@ -152,6 +152,7 @@ class App extends Component {
 									eqRequest={this.eqRequest}
 									eqInfo={this.state.eqInfo}
 									mountCheck={this.state.mountCheck}
+									apiNewRequest={this.apiNewRequest}
 								/>
 							}
 						/>

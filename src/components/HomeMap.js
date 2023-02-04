@@ -6,12 +6,17 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 
 function HomeMap(props) {
-	const { eqData, eqRequest } = props;
+	const { eqData, eqRequest, apiNewRequest } = props;
 	const [quakeStart, setQuakeStart] = useState('');
 	const [minMagnitude, setMagnitude] = useState('');
 	const navigate = useNavigate();
-	// const btnRef = useRef(null);
+	const actualDate = new Date();
 	const STARTER_POSITION = [51.505, -0.09];
+	const EQSTART = '&starttime=';
+	const EQEND =
+		'&endtime=' +
+		actualDate.toISOString().replace(/T.*/, '').split('-').join('-') +
+		'&minmagnitude=';
 	let date24 = new Date();
 	let date7d = new Date();
 	let date30d = new Date();
@@ -22,14 +27,26 @@ function HomeMap(props) {
 	date24 = date24.toISOString().replace(/T.*/, '').split('-').join('-');
 	date7d = date7d.toISOString().replace(/T.*/, '').split('-').join('-');
 	date30d = date30d.toISOString().replace(/T.*/, '').split('-').join('-');
+	const eqRequestSetup = (start, minMag) => {
+		const request =
+			'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson' +
+			EQSTART +
+			start +
+			EQEND +
+			minMag +
+			'';
+		apiNewRequest(request);
+	};
+
 	if (searchBtn) {
 		console.log(quakeStart, minMagnitude);
 		searchBtn.addEventListener('click', e => {
 			const dateError = document.querySelector('.wrapper_combo_date');
 			const magError = document.querySelector('.wrapper_combo_magnitude');
 			if (quakeStart && minMagnitude) {
+				eqRequestSetup(quakeStart, minMagnitude);
 				console.log(quakeStart, minMagnitude);
-				eqRequest(quakeStart, minMagnitude);
+				// eqRequest(quakeStart, minMagnitude);
 				dateError.classList.remove('error');
 				magError.classList.remove('error');
 			} else {
@@ -168,5 +185,6 @@ function HomeMap(props) {
 HomeMap.propTypes = {
 	eqData: PropTypes.array,
 	eqRequest: PropTypes.func,
+	apiNewRequest: PropTypes.func,
 };
 export default HomeMap;

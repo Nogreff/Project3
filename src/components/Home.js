@@ -5,11 +5,15 @@ import HomeLatest from './HomeLatest';
 import '../css/Home.css';
 
 function Home(props) {
-	const { eqData, eqRequest, eqInfo, mountCheck } = props;
+	const { eqData, eqRequest, eqInfo, apiNewRequest, mountCheck } = props;
 	return (
 		<div className='home_container'>
 			<HomeInfo eqInfo={eqInfo} mountCheck={mountCheck} />
-			<HomeMap eqData={eqData} eqRequest={eqRequest} />
+			<HomeMap
+				eqData={eqData}
+				eqRequest={eqRequest}
+				apiNewRequest={apiNewRequest}
+			/>
 			<HomeLatest eqData={eqData} />
 		</div>
 	);
@@ -17,6 +21,7 @@ function Home(props) {
 Home.propTypes = {
 	eqData: PropTypes.array,
 	eqRequest: PropTypes.func,
+	apiNewRequest: PropTypes.func,
 	eqInfo: PropTypes.array,
 	mountCheck: PropTypes.bool,
 };
