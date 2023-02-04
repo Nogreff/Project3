@@ -125,7 +125,7 @@ class App extends Component {
 				EQEND,
 		});
 
-		this.getFilter().then(this.apiNewRequest());
+		this.getFilter().then(() => this.apiNewRequest());
 	};
 
 	componentDidMount() {
