@@ -66,7 +66,6 @@ class App extends Component {
 
 	apiNewRequest = newRequest => {
 		const URL = newRequest;
-		console.log(URL);
 		fetch(URL)
 			.then(response => response.json())
 			.then(data => {
