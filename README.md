@@ -23,5 +23,5 @@ When you click on the link of an earthquake, it will show a page with informatio
 <br></br>
 ## API infromation:
 * API website: https://earthquake.usgs.gov/
-* API link: https://earthquake.usgs.gov/fdsnws/event/1/
+* API documentation: https://earthquake.usgs.gov/fdsnws/event/1/
 
